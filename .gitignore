@@ -1,0 +1,119 @@
+
+
+# Direktori build
+/build/
+/app/build/
+/**/build/
+
+# File konfigurasi IDE
+/.idea/
+/.idea/*
+/*.iml
+.gradle/
+/local.properties
+.DS_Store
+.cxx/
+/*.log
+*.hprof
+
+# File cache Android
+/.gradle/
+/.gradle/*
+
+# Output lint
+/lint/reports/
+/lint/outputs/
+
+# Direktori file build NDK
+.externalNativeBuild/
+
+# Konfigurasi keystore (jika ada)
+*.keystore
+*.jks
+
+# Cache konfigurasi Android Studio
+/captures/
+/output.json
+
+# File Gradle wrapper
+gradle-wrapper.jar
+!gradle-wrapper.properties
+
+# Direktori untuk Android emulators
+*.kmp
+*.xcuserdata/
+*.junit_report/
+
+# File yang dihasilkan oleh Android Studio dan sistem operasi
+.idea/workspace.xml
+.idea/libraries
+.idea/shelf
+.idea/modules.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/compiler.xml
+.idea/copyright/
+.idea/dictionaries/
+.idea/jsLibraryMappings.xml
+.idea/kotlinNative.xml
+.idea/libraries/
+.idea/misc.xml
+.idea/modules.xml
+.idea/runConfigurations/
+.idea/uiDesigner.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/codeStyles/
+.idea/codeStyles/Project.xml
+.idea/codeStyles/Project.xml
+.idea/jarRepositories.xml
+
+# File debug terkait database
+*.db
+*.sqlite3
+
+# Pengaturan virtual devices
+.idea/avd/
+
+# Folder output APK dan Bundle
+*.apk
+*.ap_
+*.aab
+
+# Log, temp, dan file umum lainnya
+*.log
+.idea/macros.xml
+.idea/syncLocalAndRemoteSettings.xml
+.idea/recentProjects.xml
+.idea/encodings.xml
+.idea/gradle.xml
+.idea/compiler.xml
+.idea/sonarIssues.xml
+
+# Cache dari build tool
+.gradle/
+.idea/kotlinUpdates.xml
+/externalNativeBuild/
+
+# File yang dihasilkan untuk Android Studio 3.5+
+.idea/caches/
+/.idea/workspace.xml
+.idea/svn/
+/.idea/shelves/
+
+# Direktori library Maven lokal (opsional, bisa diabaikan jika lokal)
+**/build/intermediates/
+
+# Artifacts Gradle dan cache Gradle lainnya
+**/gradle/caches/
+**/gradle/daemon/
+**/gradle/native/
+**/gradle/gradle/
+
+# Android Studio localizations
+.idea/modules.xml
+.idea/libraries.xml
+.idea/codeStyles/Project.xml
+
+# Plugin dan folder yang dihasilkan lainnya
+.idea/codeStyles/
