@@ -20,7 +20,8 @@ private val LightColors = lightColorScheme(
     surface = Color.White,
     onSurface = Color.Black,
     scrim = Custtom,
-    primaryContainer = Hitam
+    primaryContainer = Hitam,
+    outlineVariant = bghijau,
 )
 
 private val DarkColors = darkColorScheme(
