@@ -24,7 +24,7 @@ fun BottomNavigationBar(
 ) {
     val items = listOf(
         Screen.Home,
-        Screen.Riwayat,
+        Screen.WeightTracker,
         Screen.Rumus,
         Screen.InfoKesehatan
     )

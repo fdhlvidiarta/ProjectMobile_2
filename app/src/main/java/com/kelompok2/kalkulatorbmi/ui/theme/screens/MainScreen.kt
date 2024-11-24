@@ -37,7 +37,7 @@ fun MainScreen() {
             }
         },
         bottomBar = {
-            if (currentRoute == Screen.Home.route || currentRoute == Screen.Riwayat.route || currentRoute == Screen.Rumus.route || currentRoute == Screen.InfoKesehatan.route) {
+            if (currentRoute == Screen.Home.route || currentRoute == Screen.WeightTracker.route || currentRoute == Screen.Rumus.route || currentRoute == Screen.InfoKesehatan.route) {
                 BottomNavigationBar(navController = navController)
             }
         }
@@ -53,7 +53,7 @@ fun MainScreen() {
 fun getTitleForScreen(route: String?): String {
     return when (route) {
         Screen.Home.route -> "Home"
-        Screen.Riwayat.route -> "Riwayat"
+        Screen.WeightTracker.route -> "Pelacak Berat"
         Screen.Rumus.route -> "Rumus"
         Screen.InfoKesehatan.route -> "Info Kesehatan"
         else -> "BMI Calculator" // Judul default atau untuk SplashScreen
