@@ -54,7 +54,7 @@ fun HomeScreen(onNavigate: (String) -> Unit) {
                 icon = R.drawable.ic_mttl, // Ikon sesuai desain
                 onClick = {
                     isNavigating = true // Setel state ke true untuk menyembunyikan konten
-                    onNavigate("massa_tubuh_tanpa_lemak")
+                    onNavigate(Screen.LeanBodyMass.route)
                 }
             )
         }

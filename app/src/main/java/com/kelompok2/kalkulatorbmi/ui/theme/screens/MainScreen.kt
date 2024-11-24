@@ -17,7 +17,6 @@ import com.kelompok2.kalkulatorbmi.ui.theme.components.BottomNavigationBar
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-
     // Mendapatkan rute saat ini
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -27,7 +26,7 @@ fun MainScreen() {
 
     Scaffold(
         topBar = {
-            if (currentRoute != Screen.Splash.route && currentRoute != Screen.BMICalculator.route) {
+            if (currentRoute != Screen.Splash.route && currentRoute != Screen.BMICalculator.route && currentRoute != Screen.LeanBodyMass.route) {
                 TopAppBar(
                     title = { Text(text = title) },
                     colors = TopAppBarDefaults.mediumTopAppBarColors(
