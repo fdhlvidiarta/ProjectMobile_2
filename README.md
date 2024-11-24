@@ -38,20 +38,20 @@ Pengguna dapat mengakses BMI Calculator melalui Home Screen, menghitung BMI, dan
 
 ---
 
-## Sprint 3: Pengembangan Fitur Massa Tubuh Tanpa Lemak dan Riwayat Hasil
+## Sprint 3: Pengembangan Fitur Massa Tubuh Tanpa Lemak dan Pelacak Berat
 **Tanggal: 18 Nov - 24 Nov**
 
 ### Tujuan
-Menambahkan fitur untuk menghitung Massa Tubuh Tanpa Lemak dan menyimpan hasil perhitungan ke dalam Riwayat.
+Menambahkan fitur untuk menghitung Massa Tubuh Tanpa Lemak dan Monitoring Perkembangan Berat Badan .
 
 ### Tugas
 - Fitur Massa Tubuh Tanpa Lemak
 - Logika Perhitungan untuk Pria dan Wanita
-- Fitur Riwayat Hasil
+- Fitur Pelacak Berat
 - Mengintegrasikan Penyimpanan Lokal untuk Menyimpan Hasil
 
 ### Hasil Akhir
-Pengguna dapat menghitung massa tubuh tanpa lemak dan melihat riwayat perhitungan sebelumnya di layar Riwayat.
+Pengguna dapat menghitung massa tubuh tanpa lemak dan Melacak Perkembangan Berat Badan.
 
 ---
 
