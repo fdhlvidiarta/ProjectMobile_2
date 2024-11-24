@@ -25,7 +25,6 @@ class WeightTrackerViewModel(private val weightDao: WeightDao) : ViewModel() {
     val progress: StateFlow<Float> = _progress.asStateFlow()
 
     private val _notification = MutableStateFlow<String?>(null)
-    val notification: StateFlow<String?> = _notification.asStateFlow()
 
     init {
         loadUserGoal()
@@ -115,7 +114,4 @@ class WeightTrackerViewModel(private val weightDao: WeightDao) : ViewModel() {
         }
     }
 
-    fun clearNotification() {
-        _notification.value = null
-    }
 }
