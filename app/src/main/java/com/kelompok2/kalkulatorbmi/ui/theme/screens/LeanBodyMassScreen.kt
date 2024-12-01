@@ -230,10 +230,16 @@ fun LeanBodyMassScreen(navController: NavController) {
 }
 
 fun calculateLeanBodyMass(weight: Double, height: Double, age: Int, gender: String): Double? {
-    return when (gender) {
-        "Laki-laki" -> 0.407 * weight + 0.267 * height - 0.1 * age - 19.2
-        "Perempuan" -> 0.252 * weight + 0.473 * height - 0.1 * age - 48.3
-        else -> null
+    return if (age <= 14) {
+        // Formula untuk usia dibawah 15 tahun
+        val eECV = 0.0215 * weight.pow(0.6469) * height.pow(0.7236)
+        3.8 * eECV
+    } else {
+        when (gender) {
+            "Laki-laki" -> 0.407 * weight + 0.267 * height - 19.2
+            "Perempuan" -> 0.252 * weight + 0.473 * height - 48.3
+            else -> null
+        }
     }
 }
 

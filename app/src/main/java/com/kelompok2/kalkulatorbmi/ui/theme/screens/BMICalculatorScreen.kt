@@ -126,7 +126,7 @@ fun BMICalculatorScreen(navController: NavController) {
                         val heightInMeters = heightValue / 100
                         bmiResult = weightValue / (heightInMeters * heightInMeters)
                         category = getBMICategory(bmiResult!!, gender, ageValue)
-                        suggestedWeightRange = getSuggestedWeightRange(heightInMeters, gender, ageValue)
+                        suggestedWeightRange = getSuggestedWeightRange(heightInMeters)
                         inputHeightText = "Tinggi badan: $height cm"
                     }
                 },
@@ -235,9 +235,6 @@ fun BMICalculatorScreen(navController: NavController) {
                                     fontWeight = FontWeight.Bold
                                 )
 
-                                Spacer(modifier = Modifier.height(8.dp))
-
-                                Text(inputHeightText, fontSize = 15.sp)
 
                                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -252,7 +249,7 @@ fun BMICalculatorScreen(navController: NavController) {
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
-                                        "Saran berat ideal $gender: $suggestedWeightRange (kg)",
+                                        "Saran rentang berat ideal $suggestedWeightRange (kg)",
                                         fontSize = 15.sp,
                                         fontWeight = FontWeight.Bold,
                                         textAlign = TextAlign.Center
@@ -269,53 +266,21 @@ fun BMICalculatorScreen(navController: NavController) {
 
 fun getBMICategory(bmi: Double, gender: String, age: Int): String {
     return when {
-        age >= 60 -> {
-            when {
-                bmi < 22 -> "Berat Badan Kurus"
-                bmi <= 27 -> "Berat Badan Normal"
-                bmi <= 32 -> "Kelebihan Berat Badan"
-                else -> "Obesitas"
-            }
-        }
-        gender == "Laki-laki" -> {
-            when {
-                bmi < 18.5 -> "Berat Badan Kurus"
-                bmi <= 24.9 -> "Berat Badan Normal"
-                bmi <= 29.9 -> "Kelebihan Berat Badan"
-                else -> "Obesitas"
-            }
-        }
-        else -> {
-            when {
-                bmi < 18.5 -> "Berat Badan Kurus"
-                bmi <= 22.9 -> "Berat Badan Normal"
-                bmi <= 27.9 -> "Kelebihan Berat Badan"
-                else -> "Obesitas"
-            }
-        }
+        bmi < 16 -> "Terlalu Kurus"
+        bmi in 16.0..17.0 -> "Kurus Sedang"
+        bmi in 17.0..18.5 -> "Kurus Ringan"
+        bmi in 18.5..25.0 -> "Normal"
+        bmi in 25.0..30.0 -> "Kelebihan Berat Badan"
+        bmi in 30.0..35.0 -> "Obesitas Kelas I"
+        bmi in 35.0..40.0 -> "Obesitas Kelas II"
+        bmi > 40.0 -> "Obesitas Kelas III"
+        else -> "Kategori Tidak Dikenal"
     }
 }
 
-fun getSuggestedWeightRange(heightInMeters: Double, gender: String, age: Int): String {
-    val minWeight: Double
-    val maxWeight: Double
 
-    if (age >= 60) {
-        if (gender == "Laki-laki") {
-            minWeight = 18.5 * heightInMeters * heightInMeters
-            maxWeight = 23.0 * heightInMeters * heightInMeters
-        } else {
-            minWeight = 17.5 * heightInMeters * heightInMeters
-            maxWeight = 22.5 * heightInMeters * heightInMeters
-        }
-    } else {
-        if (gender == "Laki-laki") {
-            minWeight = 20.0 * heightInMeters * heightInMeters
-            maxWeight = 25.0 * heightInMeters * heightInMeters
-        } else {
-            minWeight = 18.5 * heightInMeters * heightInMeters
-            maxWeight = 24.0 * heightInMeters * heightInMeters
-        }
-    }
+fun getSuggestedWeightRange(heightInMeters: Double): String {
+    val minWeight = 18.5 * heightInMeters * heightInMeters
+    val maxWeight = 24.9 * heightInMeters * heightInMeters
     return "${String.format("%.1f", minWeight)} - ${String.format("%.1f", maxWeight)}"
 }
