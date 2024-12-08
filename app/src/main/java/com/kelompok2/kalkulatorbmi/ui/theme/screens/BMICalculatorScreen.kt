@@ -1,7 +1,6 @@
 package com.kelompok2.kalkulatorbmi.ui.theme.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -27,14 +26,11 @@ import androidx.navigation.NavController
 fun BMICalculatorScreen(navController: NavController) {
     var weight by remember { mutableStateOf("") }
     var height by remember { mutableStateOf("") }
-    var age by remember { mutableStateOf("") }
-    var selectedGender by remember { mutableStateOf("") }
-    var gender by remember { mutableStateOf("Laki-laki") }
     var bmiResult by remember { mutableStateOf<Double?>(null) }
     var category by remember { mutableStateOf<String?>(null) }
     var suggestedWeightRange by remember { mutableStateOf("") }
-    var inputHeightText by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
+    var lastHeightInput by remember { mutableStateOf<Double?>(null) }
 
     Scaffold(
         topBar = {
@@ -73,6 +69,7 @@ fun BMICalculatorScreen(navController: NavController) {
                 onValueChange = { weight = it },
                 label = { Text("Berat Badan (kg)") },
                 modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
 
@@ -81,53 +78,26 @@ fun BMICalculatorScreen(navController: NavController) {
                 onValueChange = { height = it },
                 label = { Text("Tinggi Badan (cm)") },
                 modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
-
-            OutlinedTextField(
-                value = age,
-                onValueChange = { age = it },
-                label = { Text("Umur (tahun)") },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
-            )
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Jenis Kelamin", modifier = Modifier.weight(1f))
-                RadioButton(
-                    selected = selectedGender == "Laki-laki",
-                    onClick = { selectedGender = "Laki-laki" }
-                )
-                Text("Laki-laki", modifier = Modifier.clickable { selectedGender = "Laki-laki" })
-                Spacer(modifier = Modifier.width(16.dp))
-                RadioButton(
-                    selected = selectedGender == "Perempuan",
-                    onClick = { selectedGender = "Perempuan" }
-                )
-                Text("Perempuan", modifier = Modifier.clickable { selectedGender = "Perempuan" })
-            }
 
             Button(
                 onClick = {
                     errorMessage = ""
-                    gender = selectedGender
                     val weightValue = weight.toDoubleOrNull()
                     val heightValue = height.toDoubleOrNull()
-                    val ageValue = age.toIntOrNull()
 
-                    if (weight.isEmpty() || height.isEmpty() || age.isEmpty() || selectedGender.isEmpty()) {
+                    if (weight.isEmpty() || height.isEmpty()) {
                         errorMessage = "Semua data harus diisi!"
-                    } else if (weightValue == null || heightValue == null || ageValue == null || weightValue <= 0 || heightValue <= 0 || ageValue <= 0) {
+                    } else if (weightValue == null || heightValue == null || weightValue <= 0 || heightValue <= 0) {
                         errorMessage = "Masukkan data yang valid!"
                     } else {
                         val heightInMeters = heightValue / 100
                         bmiResult = weightValue / (heightInMeters * heightInMeters)
-                        category = getBMICategory(bmiResult!!, gender, ageValue)
+                        category = getBMICategory(bmiResult!!)
                         suggestedWeightRange = getSuggestedWeightRange(heightInMeters)
-                        inputHeightText = "Tinggi badan: $height cm"
+                        lastHeightInput = heightValue
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -158,21 +128,21 @@ fun BMICalculatorScreen(navController: NavController) {
                                 .height(20.dp)
                                 .background(
                                     brush = Brush.horizontalGradient(
-                                        colors = listOf(
-                                            Color(0xFF2196F3),
-                                            Color(0xFF4CAF50),
-                                            Color(0xFFEAB200),
-                                            Color(0xFFFF1200)
-                                        )
+                                        colors = getBMIColors()
                                     ),
                                     shape = RoundedCornerShape(10.dp)
                                 )
                                 .drawBehind {
                                     val markerPosition = when {
-                                        bmi < 18.5 -> size.width * 0.1f
-                                        bmi < 24.9 -> size.width * 0.4f
-                                        bmi < 29.9 -> size.width * 0.7f
-                                        else -> size.width * 0.9f
+                                        bmi < 16 -> size.width * 0.05f
+                                        bmi in 16.0..17.0 -> size.width * 0.125f
+                                        bmi in 17.0..18.5 -> size.width * 0.25f
+                                        bmi in 18.5..24.9 -> size.width * 0.375f
+                                        bmi in 25.0..29.9 -> size.width * 0.625f
+                                        bmi in 30.0..35.0 -> size.width * 0.75f
+                                        bmi in 35.0..40.0 -> size.width * 0.875f
+                                        bmi > 40.0 -> size.width * 0.95f
+                                        else -> size.width * 0.5f
                                     }
                                     val triangleHeight = 20.dp.toPx()
                                     drawLine(
@@ -190,26 +160,15 @@ fun BMICalculatorScreen(navController: NavController) {
                                 .padding(horizontal = 16.dp),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text(
-                                "18.5",
-                                fontSize = 12.sp,
-                                textAlign = TextAlign.Start,
-                                color = Color.Black,
-                                modifier = Modifier.padding(start = 23.dp)
-                            )
-                            Text(
-                                "24.9",
-                                fontSize = 12.sp,
-                                textAlign = TextAlign.Center,
-                                color = Color.Black
-                            )
-                            Text(
-                                "29.9",
-                                fontSize = 12.sp,
-                                textAlign = TextAlign.End,
-                                color = Color.Black,
-                                modifier = Modifier.padding(end = 23.dp)
-                            )
+                            listOf("16", "17", "18.5", "24.9", "25", "29.9", "35", "40").forEachIndexed { index, label ->
+                                Text(
+                                    label,
+                                    fontSize = 12.sp,
+                                    textAlign = TextAlign.Center,
+                                    color = Color.Black,
+                                    modifier = Modifier.padding(start = if (index == 0) 16.dp else 0.dp, end = if (index == 7) 16.dp else 0.dp)
+                                )
+                            }
                         }
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -222,19 +181,27 @@ fun BMICalculatorScreen(navController: NavController) {
                             contentAlignment = Alignment.Center
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text("Hasil BMI Anda", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                                Text("Hasil BMI Anda", fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
                                 Text(
                                     text = String.format("%.2f", bmi),
                                     fontSize = 36.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary,
+                                    color = getBMIColor(bmi),
                                     modifier = Modifier.padding(bottom = 8.dp)
                                 )
-                                Text("Kategori: $categoryText",
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold
+
+                                Text(
+                                    text = "Tinggi Badan: ${lastHeightInput?.toInt()} cm",
+                                    fontSize = 15.sp,
+                                    fontWeight = FontWeight.Medium
                                 )
 
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                                Text("Kategori: $categoryText",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.ExtraBold
+                                )
 
                                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -248,12 +215,24 @@ fun BMICalculatorScreen(navController: NavController) {
                                         .padding(12.dp),
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    Text(
-                                        "Saran rentang berat ideal $suggestedWeightRange (kg)",
-                                        fontSize = 15.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        textAlign = TextAlign.Center
-                                    )
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                                    ) {
+                                        Text(
+                                            text = "Kisaran BMI Sehat: 18.5 - 25",
+                                            fontSize = 15.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            textAlign = TextAlign.Center
+                                        )
+
+                                        Text(
+                                            text = "Kisaran Berat Ideal: $suggestedWeightRange (kg)",
+                                            fontSize = 15.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            textAlign = TextAlign.Center
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -264,7 +243,8 @@ fun BMICalculatorScreen(navController: NavController) {
     }
 }
 
-fun getBMICategory(bmi: Double, gender: String, age: Int): String {
+
+fun getBMICategory(bmi: Double): String {
     return when {
         bmi < 16 -> "Terlalu Kurus"
         bmi in 16.0..17.0 -> "Kurus Sedang"
@@ -278,6 +258,32 @@ fun getBMICategory(bmi: Double, gender: String, age: Int): String {
     }
 }
 
+fun getBMIColor(bmi: Double): Color {
+    return when {
+        bmi < 16 -> Color(0xFF1976D2)
+        bmi in 16.0..17.0 -> Color(0xFF2196F3)
+        bmi in 17.0..18.5 -> Color(0xFF03A9F4)
+        bmi in 18.5..25.0 -> Color(0xFF4CAF50)
+        bmi in 25.0..30.0 -> Color(0xFFFFEB3B)
+        bmi in 30.0..35.0 -> Color(0xFFFF9800)
+        bmi in 35.0..40.0 -> Color(0xFFF44336)
+        bmi > 40.0 -> Color(0xFFD32F2F)
+        else -> Color.Gray
+    }
+}
+
+fun getBMIColors(): List<Color> {
+    return listOf(
+        Color(0xFF1976D2),
+        Color(0xFF2196F3),
+        Color(0xFF03A9F4),
+        Color(0xFF4CAF50),
+        Color(0xFF4CAF50),
+        Color(0xFFFFEB3B),
+        Color(0xFFFF9800),
+        Color(0xFFF44336)
+    )
+}
 
 fun getSuggestedWeightRange(heightInMeters: Double): String {
     val minWeight = 18.5 * heightInMeters * heightInMeters
