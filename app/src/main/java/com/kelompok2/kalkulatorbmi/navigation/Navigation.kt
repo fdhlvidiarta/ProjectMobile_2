@@ -1,10 +1,10 @@
 package com.kelompok2.kalkulatorbmi.navigation
 
-import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.annotation.DrawableRes
 import com.kelompok2.kalkulatorbmi.R
 import com.kelompok2.kalkulatorbmi.ui.theme.screens.*
 
@@ -21,14 +21,11 @@ sealed class Screen(val route: String, val title: String, @DrawableRes val icon:
 @Composable
 fun AppNavigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
-
         composable(Screen.Splash.route) {
             SplashScreen(navController = navController)
         }
         composable(Screen.Home.route) {
-            HomeScreen(onNavigate = { route ->
-                navController.navigate(route)
-            })
+            HomeScreen(onNavigate = { route -> navController.navigate(route) })
         }
         composable(Screen.BMICalculator.route) {
             BMICalculatorScreen(navController = navController)
@@ -39,7 +36,32 @@ fun AppNavigation(navController: NavHostController) {
         composable(Screen.WeightTracker.route) {
             WeightTrackerScreen()
         }
-        composable(Screen.Rumus.route) { RumusScreen() }
-        composable(Screen.InfoKesehatan.route) { InfoKesehatanScreen() }
+        composable(Screen.Rumus.route) {
+            RumusScreen()
+        }
+        composable(Screen.InfoKesehatan.route) {
+            InfoKesehatanScreen(navController = navController) // Ensure InfoKesehatanScreen is implemented
+        }
+        composable("detail_dada_ayam") {
+            DetailDadaAyamScreen() // Implement your own screen or ensure this is correct
+        }
+        composable("detail_telur") {
+            DetailTelurScreen() // Implement your own screen or ensure this is correct
+        }
+        composable("detail_kacang") {
+            DetailKacangScreen() // Implement your own screen or ensure this is correct
+        }
+        composable("detail_renang") {
+            DetailRenangSehatScreen() // Implement your own screen or ensure this is correct
+        }
+        composable("detail_lari") {
+            DetailLariSehatScreen() // Implement your own screen or ensure this is correct
+        }
+        composable("detail_angkat_beban") {
+            DetailAngkatBebanSehatScreen() // Implement your own screen or ensure this is correct
+        }
+
+
+
     }
 }
