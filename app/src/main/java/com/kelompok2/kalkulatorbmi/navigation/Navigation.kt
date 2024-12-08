@@ -14,8 +14,8 @@ sealed class Screen(val route: String, val title: String, @DrawableRes val icon:
     object BMICalculator : Screen("bmi_calculator", "Indeks Massa Tubuh", null)
     object LeanBodyMass : Screen("lean_body_mass", "Lean Body Mass", null)
     object WeightTracker : Screen("weight_tracker_screen", "Pelacak", R.drawable.ic_weight)
-    object Rumus : Screen("rumus_screen", "Rumus", R.drawable.ic_formula)
-    object InfoKesehatan : Screen("info_screen", "Kesehatan", R.drawable.ic_more)
+    object Rumus : Screen("rumus_screen", "Rumus", R.drawable.ic_info)
+    object InfoKesehatan : Screen("info_screen", "Kesehatan", R.drawable.ic_medical)
 }
 
 @Composable
