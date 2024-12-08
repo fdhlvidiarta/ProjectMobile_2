@@ -1,110 +1,124 @@
 package com.kelompok2.kalkulatorbmi.ui.theme.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.clickable
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.kelompok2.kalkulatorbmi.R
 
 @Composable
-fun InfoKesehatanScreen() {
+fun InfoKesehatanScreen(navController: NavHostController) {
+    val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.Start
+            .padding(10.dp)
+            .verticalScroll(scrollState)
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
+        SectionTitle(title = "Makanan Sehat")
+        val healthInfoList = listOf(
+            Triple(
+                R.drawable.dada_ayam,
+                "Dada ayam tanpa kulit adalah sumber protein tinggi dan rendah lemak. Cocok untuk diet tinggi protein tanpa kalori berlebih.",
+                "detail_dada_ayam"
+            ),
+            Triple(
+                R.drawable.telur_ayam,
+                "Telur adalah sumber protein berkualitas tinggi dan rendah gula. Mengandung berbagai vitamin dan mineral penting.",
+                "detail_telur"
+            ),
+            Triple(
+                R.drawable.kacang_kacangan,
+                "Kacang-kacangan seperti almond dan kacang merah mengandung protein tinggi serta serat yang mendukung pencernaan, tanpa tambahan gula.",
+                "detail_kacang"
+            )
+        )
 
-        HealthInfoCard(
-            imageRes = R.drawable.dada_ayam,
-            description = "Dada ayam tanpa kulit adalah sumber protein tinggi dan rendah lemak. Cocok untuk diet tinggi protein tanpa kalori berlebih."
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+        healthInfoList.forEach { (imageRes, description, route) ->
+            HealthInfoCard(
+                imageRes = imageRes,
+                description = description,
+                onClick = { navController.navigate(route) }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-        HealthInfoCard(
-            imageRes = R.drawable.telur_ayam,
-            description = "Telur adalah sumber protein berkualitas tinggi dan rendah gula. Mengandung berbagai vitamin dan mineral penting."
+        SectionTitle(title = "Olahraga")
+        val exerciseInfoList = listOf(
+            Triple(
+                R.drawable.lari,
+                "Lari adalah olahraga kardio yang efektif untuk meningkatkan kebugaran jantung dan membakar kalori, serta meningkatkan stamina tubuh.",
+                "detail_lari"
+            ),
+            Triple(
+                R.drawable.renang,
+                "Renang adalah latihan tubuh penuh yang melibatkan hampir semua kelompok otot, meningkatkan kekuatan dan fleksibilitas, serta mengurangi risiko cedera.",
+                "detail_renang"
+            ),
+            Triple(
+                R.drawable.angkat_beban,
+                "Angkat beban dapat membantu meningkatkan massa otot, memperkuat tulang, dan meningkatkan metabolisme tubuh, yang sangat baik untuk kesehatan jangka panjang.",
+                "detail_angkat_beban"
+            )
         )
-        Spacer(modifier = Modifier.height(16.dp))
 
-        HealthInfoCard(
-            imageRes = R.drawable.kacang_kacangan,
-            description = "Kacang-kacangan seperti almond dan kacang merah mengandung protein tinggi serta serat yang mendukung pencernaan, tanpa tambahan gula."
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        HealthInfoCard(
-            imageRes = R.drawable.ikan_salmon,
-            description = "Ikan salmon kaya akan protein dan asam lemak omega-3 yang baik untuk kesehatan jantung dan otak, rendah gula."
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Data baru
-        HealthInfoCard(
-            imageRes = R.drawable.f2e01cbc_f853_4639_8755_5b46eca40bc1, // Pastikan gambar brokoli tersedia
-            description = "Brokoli adalah sumber serat, vitamin C, dan K yang tinggi. Cocok untuk mendukung diet sehat dan menjaga kesehatan pencernaan."
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        HealthInfoCard(
-            imageRes = R.drawable.alpukat, // Ganti dengan gambar alpukat
-            description = "Alpukat mengandung lemak sehat, vitamin E, dan serat, baik untuk kesehatan kulit dan pencernaan."
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        HealthInfoCard(
-            imageRes = R.drawable.bayam_hijau_organik_1_removebg_preview, // Ganti dengan gambar bayam
-            description = "Bayam mengandung zat besi, kalsium, dan vitamin K yang mendukung kesehatan tulang dan membantu pembentukan darah."
-        )
+        exerciseInfoList.forEach { (imageRes, description, route) ->
+            HealthInfoCard(
+                imageRes = imageRes,
+                description = description,
+                onClick = { navController.navigate(route) }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
     }
 }
 
+@Composable
+fun SectionTitle(title: String) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.headlineMedium.copy(fontSize = 24.sp), // Besarkan ukuran font
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        color = MaterialTheme.colorScheme.onBackground // Ubah warna menjadi hitam (atau sesuai tema)
+    )
+}
 
 @Composable
-fun HealthInfoCard(imageRes: Int, description: String) {
+fun HealthInfoCard(imageRes: Int, description: String, onClick: () -> Unit) {
     Card(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface
-        ),
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(horizontal = 8.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
+            .clickable(onClick = onClick),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Gambar di sebelah kiri
             Image(
                 painter = painterResource(id = imageRes),
-                contentDescription = "Health Tip Image",
+                contentDescription = null,
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(60.dp)
                     .padding(end = 16.dp)
             )
-            // Deskripsi teks
             Text(
                 text = description,
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 14.sp,
-                modifier = Modifier.weight(1f)
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.weight(1f) // Agar teks tidak keluar dari baris
             )
         }
     }
