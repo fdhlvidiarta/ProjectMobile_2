@@ -47,7 +47,7 @@ Menambahkan fitur untuk menghitung Massa Tubuh Tanpa Lemak dan menyimpan hasil p
 ### Tugas
 - Fitur Massa Tubuh Tanpa Lemak
 - Logika Perhitungan untuk Pria dan Wanita
-- Fitur Riwayat Hasil
+- Fitur Pelacak Berat
 - Mengintegrasikan Penyimpanan Lokal untuk Menyimpan Hasil
 
 ### Hasil Akhir
