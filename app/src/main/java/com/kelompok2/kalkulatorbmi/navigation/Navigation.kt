@@ -43,22 +43,22 @@ fun AppNavigation(navController: NavHostController) {
             InfoKesehatanScreen(navController = navController) // Ensure InfoKesehatanScreen is implemented
         }
         composable("detail_dada_ayam") {
-            DetailDadaAyamScreen() // Implement your own screen or ensure this is correct
+            DetailDadaAyamScreen(navController = navController) // Implement your own screen or ensure this is correct
         }
         composable("detail_telur") {
-            DetailTelurScreen() // Implement your own screen or ensure this is correct
+            DetailTelurScreen(navController = navController) // Implement your own screen or ensure this is correct
         }
         composable("detail_kacang") {
-            DetailKacangScreen() // Implement your own screen or ensure this is correct
+            DetailKacangScreen(navController = navController) // Implement your own screen or ensure this is correct
         }
         composable("detail_renang") {
-            DetailRenangSehatScreen() // Implement your own screen or ensure this is correct
+            DetailRenangSehatScreen(navController = navController) // Implement your own screen or ensure this is correct
         }
         composable("detail_lari") {
-            DetailLariSehatScreen() // Implement your own screen or ensure this is correct
+            DetailLariSehatScreen(navController = navController) // Implement your own screen or ensure this is correct
         }
         composable("detail_angkat_beban") {
-            DetailAngkatBebanSehatScreen() // Implement your own screen or ensure this is correct
+            DetailAngkatBebanSehatScreen(navController = navController) // Implement your own screen or ensure this is correct
         }
 
 
