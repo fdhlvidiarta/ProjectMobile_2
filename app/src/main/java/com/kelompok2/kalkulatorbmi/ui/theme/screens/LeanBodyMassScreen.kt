@@ -27,10 +27,9 @@ import kotlin.math.pow
 fun LeanBodyMassScreen(navController: NavController) {
     var weight by remember { mutableStateOf("") }
     var height by remember { mutableStateOf("") }
-    var age by remember { mutableStateOf("") }
+    var ageOption by remember { mutableStateOf("") }
     var gender by remember { mutableStateOf("") }
     var leanBodyMassResult by remember { mutableStateOf<Double?>(null) }
-    var recommendation by remember { mutableStateOf("") }
     var advice by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
 
@@ -71,6 +70,7 @@ fun LeanBodyMassScreen(navController: NavController) {
                 onValueChange = { weight = it },
                 label = { Text("Berat Badan (kg)") },
                 modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
 
@@ -79,27 +79,88 @@ fun LeanBodyMassScreen(navController: NavController) {
                 onValueChange = { height = it },
                 label = { Text("Tinggi Badan (cm)") },
                 modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
             )
 
-            OutlinedTextField(
-                value = age,
-                onValueChange = { age = it },
-                label = { Text("Umur (tahun)") },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
-            )
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    "Usia Anda Lebih Dari 15 Tahun?",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .clickable { ageOption = "Ya" }
+                            .padding(end = 8.dp)
+                    ) {
+                        RadioButton(
+                            selected = ageOption == "Ya",
+                            onClick = { ageOption = "Ya" }
+                        )
+                        Text("Ya")
+                    }
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Jenis Kelamin", modifier = Modifier.weight(1f))
-                RadioButton(selected = gender == "Laki-laki", onClick = { gender = "Laki-laki" })
-                Text("Laki-laki", modifier = Modifier.clickable { gender = "Laki-laki" })
-                Spacer(modifier = Modifier.width(16.dp))
-                RadioButton(selected = gender == "Perempuan", onClick = { gender = "Perempuan" })
-                Text("Perempuan", modifier = Modifier.clickable { gender = "Perempuan" })
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .clickable { ageOption = "Tidak" }
+                            .padding(end = 8.dp)
+                    ) {
+                        RadioButton(
+                            selected = ageOption == "Tidak",
+                            onClick = { ageOption = "Tidak" }
+                        )
+                        Text("Tidak")
+                    }
+                }
+            }
+
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    "Jenis Kelamin",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .clickable { gender = "Laki-laki" }
+                            .padding(end = 8.dp)
+                    ) {
+                        RadioButton(
+                            selected = gender == "Laki-laki",
+                            onClick = { gender = "Laki-laki" }
+                        )
+                        Text("Laki-laki")
+                    }
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .clickable { gender = "Perempuan" }
+                            .padding(end = 8.dp)
+                    ) {
+                        RadioButton(
+                            selected = gender == "Perempuan",
+                            onClick = { gender = "Perempuan" }
+                        )
+                        Text("Perempuan")
+                    }
+                }
             }
 
             if (errorMessage.isNotEmpty()) {
@@ -116,7 +177,6 @@ fun LeanBodyMassScreen(navController: NavController) {
                 onClick = {
                     val weightValue = weight.toDoubleOrNull()
                     val heightValue = height.toDoubleOrNull()
-                    val ageValue = age.toIntOrNull()
 
                     if (weightValue == null || weightValue <= 0) {
                         errorMessage = "Berat badan tidak valid."
@@ -128,25 +188,19 @@ fun LeanBodyMassScreen(navController: NavController) {
                         return@Button
                     }
 
-                    if (ageValue == null || ageValue <= 0) {
-                        errorMessage = "Umur tidak valid."
+                    if (ageOption.isEmpty()) {
+                        errorMessage = "Silakan pilih apakah usia Anda lebih dari 15 tahun: Ya atau Tidak."
                         return@Button
                     }
 
-                    if (gender.isEmpty()) {
-                        errorMessage = "Pilih jenis kelamin."
+                    if (ageOption == "Ya" && gender.isEmpty()) {
+                        errorMessage = "Silakan pilih jenis kelamin Anda: Laki-laki atau Perempuan."
                         return@Button
                     }
 
                     errorMessage = ""
-                    leanBodyMassResult = calculateLeanBodyMass(weightValue, heightValue, ageValue, gender)
+                    leanBodyMassResult = calculateLeanBodyMass(weightValue, heightValue, ageOption, gender)
                     if (leanBodyMassResult != null) {
-                        recommendation = if (leanBodyMassResult!! > 60) {
-                            "Massa tubuh tanpa lemak Anda sangat baik! Tetap jaga pola makan sehat dan olahraga teratur."
-                        } else {
-                            "Massa tubuh tanpa lemak Anda cukup baik. Anda bisa meningkatkan massa otot dengan olahraga rutin seperti angkat beban."
-                        }
-
                         advice = when {
                             weightValue / (heightValue / 100).pow(2) < 18.5 -> {
                                 "Anda berada dalam kategori kurus. Tingkatkan asupan kalori dan protein, konsumsi makanan bergizi seperti alpukat, selai kacang, ayam, ikan, dan telur. Selain itu, lakukan latihan beban dan latihan kekuatan secara rutin untuk membantu membangun massa otot!"
@@ -190,20 +244,18 @@ fun LeanBodyMassScreen(navController: NavController) {
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
                             )
+
                             Spacer(modifier = Modifier.height(8.dp))
+
                             Text(
                                 text = String.format("%.2f kg", lbm),
                                 fontSize = 36.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.primary
                             )
+
                             Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = recommendation,
-                                fontSize = 15.sp,
-                                textAlign = TextAlign.Center
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
+
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -229,11 +281,16 @@ fun LeanBodyMassScreen(navController: NavController) {
     }
 }
 
-fun calculateLeanBodyMass(weight: Double, height: Double, age: Int, gender: String): Double? {
-    return when (gender) {
-        "Laki-laki" -> 0.407 * weight + 0.267 * height - 0.1 * age - 19.2
-        "Perempuan" -> 0.252 * weight + 0.473 * height - 0.1 * age - 48.3
-        else -> null
+fun calculateLeanBodyMass(weight: Double, height: Double, ageOption: String, gender: String): Double? {
+    return if (ageOption == "Tidak") {
+        // Formula untuk usia dibawah 15 tahun
+        val eECV = 0.0215 * weight.pow(0.6469) * height.pow(0.7236)
+        3.8 * eECV
+    } else {
+        when (gender) {
+            "Laki-laki" -> 0.407 * weight + 0.267 * height - 19.2
+            "Perempuan" -> 0.252 * weight + 0.473 * height - 48.3
+            else -> null
+        }
     }
 }
-

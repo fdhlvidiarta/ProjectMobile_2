@@ -36,8 +36,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kelompok2.kalkulatorbmi.ui.theme.components.AddWeightDialog
@@ -87,6 +90,39 @@ fun WeightTrackerContent(viewModel: WeightTrackerViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.padding(16.dp)) {
             if (userGoal == null) {
+                Text(
+                    text = "Lacak Perkembangan Berat Badan Anda!",
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        shadow = Shadow(
+                            color = Color.Gray,
+                            offset = Offset(2f, 2f),
+                            blurRadius = 3f
+                        )
+                    ),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .background(
+                            color = Color(0xFFF2F2F2),
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .padding(16.dp)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "Mulailah dengan menetapkan berat awal dan tujuan Anda. Klik tombol di bawah untuk memulai.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                )
+                Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = { showGoalDialog = true },
                     modifier = Modifier.fillMaxWidth()
@@ -130,13 +166,13 @@ fun WeightTrackerContent(viewModel: WeightTrackerViewModel) {
                     ) {
                         InfoCard(
                             title = if (isLosingWeight) "Menurunkan" else "Memperoleh",
-                            value = "${if (difference >= 0) "+" else ""}${difference} kg",
+                            value = "${if (difference >= 0) "+" else ""}${"%.1f".format(difference)} kg", // Dibulatkan 1 desimal
                             color = if (difference >= 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
                             backgroundColor = MaterialTheme.colorScheme.surfaceVariant
                         )
                         InfoCard(
                             title = "Sisa",
-                            value = "${if (remaining >= 0) "+" else ""}${remaining} kg",
+                            value = "${if (remaining >= 0) "+" else ""}${"%.1f".format(remaining)} kg", // Dibulatkan 1 desimal
                             color = if (remaining >= 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
                             backgroundColor = MaterialTheme.colorScheme.surfaceVariant
                         )

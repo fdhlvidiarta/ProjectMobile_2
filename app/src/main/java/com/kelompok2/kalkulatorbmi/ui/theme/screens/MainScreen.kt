@@ -26,7 +26,7 @@ fun MainScreen() {
 
     Scaffold(
         topBar = {
-            if (currentRoute != Screen.Splash.route && currentRoute != Screen.BMICalculator.route && currentRoute != Screen.LeanBodyMass.route) {
+            if (title != null) {
                 TopAppBar(
                     title = { Text(text = title) },
                     colors = TopAppBarDefaults.mediumTopAppBarColors(
@@ -37,7 +37,10 @@ fun MainScreen() {
             }
         },
         bottomBar = {
-            if (currentRoute == Screen.Home.route || currentRoute == Screen.WeightTracker.route || currentRoute == Screen.Rumus.route || currentRoute == Screen.InfoKesehatan.route) {
+            if (currentRoute == Screen.Home.route ||
+                currentRoute == Screen.WeightTracker.route ||
+                currentRoute == Screen.Rumus.route ||
+                currentRoute == Screen.InfoKesehatan.route) {
                 BottomNavigationBar(navController = navController)
             }
         }
@@ -48,14 +51,17 @@ fun MainScreen() {
     }
 }
 
+
 // Fungsi untuk mendapatkan judul berdasarkan rute
 @Composable
-fun getTitleForScreen(route: String?): String {
+fun getTitleForScreen(route: String?): String? {
     return when (route) {
         Screen.Home.route -> "Home"
         Screen.WeightTracker.route -> "Pelacak Berat"
         Screen.Rumus.route -> "Rumus"
         Screen.InfoKesehatan.route -> "Info Kesehatan"
-        else -> "BMI Calculator" // Judul default atau untuk SplashScreen
+        "detail_dada_ayam", "DetailTelur", "DetailKacang", "DetailRenangSehat", "DetailLariSehat", "DetailAngkatBebanSehat" -> null
+        Screen.Splash.route, Screen.BMICalculator.route, Screen.LeanBodyMass.route -> null
+        else -> null
     }
 }
