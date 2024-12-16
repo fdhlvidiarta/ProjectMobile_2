@@ -135,8 +135,8 @@ fun ShimmerBox(content: @Composable BoxScope.() -> Unit) {
     LaunchedEffect(Unit) {
         while (true) {
             shimmerOffset.animateTo(
-                targetValue = 900f,
-                animationSpec = tween(durationMillis = 600, easing = LinearEasing)
+                targetValue = 2000f,
+                animationSpec = tween(durationMillis = 800, easing = LinearEasing)
             )
             shimmerOffset.snapTo(-200f) // Reset posisi awal
             kotlinx.coroutines.delay(3000) // Jeda 3 detik
